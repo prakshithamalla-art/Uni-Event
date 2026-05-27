@@ -2,6 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 
+/**
+ * OfflineBanner component that displays a non-intrusive warning message
+ * at the top of the interface whenever network connection drops out.
+ * @returns {JSX.Element|null} The rendered warning banner or null if online.
+ */
 export const OfflineBanner = () => {
     const isOnline = useNetworkStatus();
 

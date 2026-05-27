@@ -45,7 +45,7 @@ if (Platform.OS === 'web') {
 
 export { auth };
 
-// 🚀 This turns on local storage database caching for offline use
+// 🚀 Local storage database caching enabled for offline usage
 export const db = initializeFirestore(app, {
     localCache: persistentLocalCache({
         tabManager: persistentMultipleTabManager(),
