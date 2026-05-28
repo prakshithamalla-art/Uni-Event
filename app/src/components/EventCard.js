@@ -39,6 +39,11 @@ import PropTypes from 'prop-types';
 // profileRequestCache: in-flight promises to prevent duplicate concurrent reads
 const profileCache = new Map();
 const profileRequestCache = new Map();
+// This tells the app: "If count is 1, use the singular word, otherwise use the plural word"
+const formatMetric = (count, singular, plural) => {
+    const value = count || 0;
+    return `${value} ${value === 1 ? singular : plural}`;
+};
 
 const EventCard = memo(
     ({
@@ -310,8 +315,8 @@ const EventCard = memo(
                                 />
                                 <Text
                                     style={[styles.infoText, { color: theme.colors.textSecondary }]}
-                                >
-                                    {event.views || 0} Views
+>
+    {formatMetric(event.views, 'View', 'Views')}
                                 </Text>
                             </View>
 
