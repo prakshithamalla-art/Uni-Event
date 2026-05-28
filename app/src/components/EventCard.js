@@ -24,6 +24,20 @@ import { formatEventDate, formatEventTime } from '../lib/formatEventDate';
 import { safeToggleEventAction } from '../lib/participantService';
 import PropTypes from 'prop-types';
 
+/**
+ * formatMetric — adaptive pluralization helper for metric badges (Issue #308)
+ * Returns a grammatically correct string for any numeric metric.
+ *
+ * @param {number|undefined|null} value  - Raw numeric value from the database
+ * @param {string} singular              - Singular label, e.g. "View"
+ * @param {string} plural                - Plural label,   e.g. "Views"
+ * @returns {string}                     - e.g. "1 View", "0 Views", "42 Views"
+ */
+const formatMetric = (value, singular, plural) => {
+    const count = value ?? 0;
+    return `${count} ${count === 1 ? singular : plural}`;
+};
+
 const EventCard = memo(
     ({
         event,
@@ -42,7 +56,7 @@ const EventCard = memo(
         const [bannerLoaded, setBannerLoaded] = useState(false);
         const [flyerLoaded, setFlyerLoaded] = useState(false);
         const [lookingForBuddy, setLookingForBuddy] = useState(false);
-        
+
         // 🔒 State tracking variable to implement frontend click locking (Issue #266 Task 4)
         const [isProcessing, setIsProcessing] = useState(false);
 
@@ -85,13 +99,13 @@ const EventCard = memo(
         const handleRegisterPress = async () => {
             if (isProcessing || !user || !event?.id) return;
 
-            // Freeze the interactive element layout layout immediately on the very first touch action
+            // Freeze the interactive element layout immediately on the very first touch action
             setIsProcessing(true);
 
             try {
                 // Call our atomic transaction validator engine
                 await safeToggleEventAction(db, user.uid, event.id, true);
-                
+
                 // Route navigation to primary view detail upon confirmation mapping clear
                 navigation.navigate('EventDetail', { eventId: event.id });
             } catch (error) {
@@ -255,6 +269,8 @@ const EventCard = memo(
                                     {event.eventMode === 'online' ? 'Online' : event.location}
                                 </Text>
                             </View>
+
+                            {/* ✅ Issue #308 — views metric now uses formatMetric for correct pluralization */}
                             <View style={styles.infoItem}>
                                 <Ionicons
                                     name="eye-outline"
@@ -264,7 +280,7 @@ const EventCard = memo(
                                 <Text
                                     style={[styles.infoText, { color: theme.colors.textSecondary }]}
                                 >
-                                    {event.views || 0} Views
+                                    {formatMetric(event.views, 'View', 'Views')}
                                 </Text>
                             </View>
 
