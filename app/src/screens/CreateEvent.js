@@ -161,30 +161,6 @@ export default function CreateEvent({ navigation, route }) {
         else setTargetYears([...targetYears, y]);
     };
 
-    // Resets all form fields to their initial empty state (#307)
-    const resetForm = () => {
-        setTitle('');
-        setDescription('');
-        setSuggestedTags([]);
-        setSelectedTags([]);
-        setCategory('');
-        setLocation('');
-        setCoordinates(null);
-        setTargetBranches(['All']);
-        setTargetYears([]);
-        setStartDate(new Date());
-        setEndDate(new Date(Date.now() + 3600000));
-        setEventMode('offline');
-        setMeetLink('');
-        setIsPaid(false);
-        setPrice('');
-        setUpiId('');
-        setRegistrationLink('');
-        setImageUri(null);
-        setUseCustomForm(false);
-        setCustomFormSchema([]);
-    };
-
     const { event } = route.params || {};
     const isEditMode = !!event;
 
@@ -423,7 +399,7 @@ export default function CreateEvent({ navigation, route }) {
     return (
         <ScreenWrapper>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => { resetForm(); navigation.goBack(); }} style={styles.backBtn}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
                     <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>{isEditMode ? 'Edit Event' : 'Create Event'}</Text>
