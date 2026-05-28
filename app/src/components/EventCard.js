@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+﻿import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
@@ -23,6 +23,12 @@ import { triggerBuddyMatchNotification } from '../lib/notificationService';
 import { formatEventDate, formatEventTime } from '../lib/formatEventDate';
 import { safeToggleEventAction } from '../lib/participantService';
 import PropTypes from 'prop-types';
+
+// Helper for grammatical polish (Issue #308)
+const formatMetric = (count, singular, plural) => {
+    const value = count || 0;
+    return `${value} ${value === 1 ? singular : plural}`;
+};
 
 const EventCard = memo(
     ({
@@ -264,7 +270,7 @@ const EventCard = memo(
                                 <Text
                                     style={[styles.infoText, { color: theme.colors.textSecondary }]}
                                 >
-                                    {event.views || 0} Views
+                                    {formatMetric(event.views, 'View', 'Views')}
                                 </Text>
                             </View>
 
